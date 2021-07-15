@@ -1,6 +1,6 @@
-# SYEP @ The Icarus
+# SYEP @ <i>The Icarus</i>
 
-Documenting my assingments intering at The Icarus.
+Documenting my <i>Icarus</i> interniship assignments.
 
 ## Contents
 
