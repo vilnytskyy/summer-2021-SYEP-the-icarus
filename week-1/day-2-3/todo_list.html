@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Todo List</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@500&family=Open+Sans&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #A799B7;
+            font-family: 'Alegreya Sans SC', sans-serif;
+            font-size: 24px;
+            margin: 0;
+        }
+
+        div {
+            margin-left: 20px;
+            font-weight: 600;
+        }
+
+        div#title {
+            font-family: 'Alegreya Sans SC', sans-serif;
+            position: sticky;
+            top: 0px;
+            left: 0px;
+            color: #FDF5BF;
+            font-size: xx-large;
+            width: 100%;
+            background-color: #222222;
+            padding: 10px 20px;
+            border-bottom: 3px solid #61DAFB;
+            margin: 0;
+        }
+
+        button {
+            color: #FDF5BF;
+            text-decoration: none;
+            font-size: 18px;
+            background-color: #413C58;
+            border: 3px solid #FDF5BF;
+            padding: 5px 10px;
+            margin: 5px;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background-color: #21822D;
+        }
+
+        input {
+            font-family: 'Open Sans', sans-serif;
+            padding: 5px 10px;
+            font-size: 18px;
+            background-color: #61DAFB;
+            margin: 10px;
+            color: #222222;
+            border: 3px solid #222222;
+            outline: none;
+        }
+
+        input:focus {
+            background-color: #FB8261;
+        }
+
+        ul,
+        span,
+        p {
+            margin-left: 40px;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 500;
+        }
+
+        ul {
+            margin-left: 0px;
+        }
+
+        span#title {
+            margin-left: 0px;
+            font-size: xx-large;
+            font-family: 'Alegreya Sans SC', sans-serif;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="title">Todo List</div>
+
+    <p>Enter text into the box and click the <strong>add</strong> button to add an item to the list. Click on an item to
+        mark it as done.</p>
+
+    <div>
+        <label for="new_text">New item text: </label>
+        <input type="text" name="new_text" id="new_text">
+        <button id="add">Add</button>
+        <button id="clear">Clear</button>
+    </div>
+
+    <div id="lists">
+        Total: <span id="total">0</span>
+        <ul id="all_items"><span id="title">Todo List</span></ul>
+        <p>Empty List</p>
+    </div>
+
+    <script type="text/javascript">
+        /* TODO: complete the code so it works as described above */
+        let addButton = document.getElementById("add"); // (1) Make this variable hold the add button
+        let textInput = document.getElementById("new_text"); //(2) Make this variable hold the text input
+        let list = document.getElementById("all_items"); //(3) Make this variable hold the <ul>
+
+        // (9)
+        let spanTotal = document.getElementById("total");
+        let countListElements = 0;
+
+        // (11)
+        let clearButton = document.getElementById("clear");
+
+        const addItem = () => {
+            // (4) create a new list item
+            let li = document.createElement("li");
+
+            //what does this do? 
+            li.innerHTML = textInput.value; // sets the text of the li element equal to the value of textInput
+
+            // (5) clear the text input
+            textInput.value = "";
+
+            // (6) add a click event listener to the new <li>
+            // such that it will turn white when you click on it
+            // hint: this.style.color = ...
+            li.addEventListener("click", () => {
+                // li.style.color = "white";
+
+                // (8)
+                li.remove();
+
+                // (10)
+                countListElements--;
+                spanTotal.innerHTML = countListElements;
+                
+                if (countListElements === 0) {
+                    // Display a paragraph element letting the user know the list is empty
+                    let p = document.createElement("p");
+                    p.innerHTML = "Empty list";
+                    document.getElementById("lists").appendChild(p);
+                }
+            });
+
+            // (7) add it to the list
+            list.appendChild(li);
+
+            // (9)
+            countListElements++;
+            spanTotal.innerHTML = countListElements;
+
+            if (countListElements === 1) {
+                // Remove the paragraph element letting the user know the list is empty when the list is not empty
+                document.getElementById("lists").lastElementChild.remove();
+            }
+        }
+
+        addButton.addEventListener("click", addItem);
+
+        /*
+            (8) Figure out how to remove elements. See if you can change the
+            code above to instead remove the <li> when they are clicked.
+        */
+
+        /* 
+            (9) Figure out how to count how many list elements are already in the list, and then update the <span id="total"> innerHTML to reflect that
+            number as items are added. (10) Figure out how to change this when they are deleted.
+        */
+
+        /* (11) Add a button next to "add" called "clear". It should clear the whole list */
+
+        const clearList = () => {
+            for (let i = 0; i < countListElements; i++) {
+                list.lastElementChild.remove();
+            }
+
+            countListElements = 0;
+            spanTotal.innerHTML = countListElements;
+
+            // Display a paragraph element letting the user know the list is empty
+            let p = document.createElement("p");
+            p.innerHTML = "Empty list";
+            document.getElementById("lists").appendChild(p);
+        }
+
+        clearButton.addEventListener("click", clearList);
+    </script>
+</body>
+
+</html>
