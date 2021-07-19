@@ -13,18 +13,30 @@ Array.prototype.myForEach = (loopBody, array) => {
     }
 };
 
+
 // FOR EACH TESTS //
 console.log("==== Testing forEach ====");
 
-// Test 1: Initial Test //
-console.log("== Test 1: Even ==");
+// Test 1: Repl is Extra //
+console.log("== Test 1: Repl is Extra ==");
 //this should be const
 const testForEach = ["Repl", "is", "extra"];
 
+// func found on the MDN Web Docs page for forEach
+function logArrayElements(element, index, array) {
+    console.log('a[' + index + '] = ' + element);
+}
+
+console.log("= forEach: =");
+testForEach.forEach(logArrayElements);
+
+console.log("= myForEach: =");
+testForEach.myForEach(logArrayElements, testForEach);
+
 //make this an arrow function
-testForEach.myForEach((element, index) => {
-    console.log(index + ": " + element);
-}, testForEach);
+// testForEach.myForEach((element, index) => {
+//     console.log(index + ": " + element);
+// }, testForEach);
 //Expected output
 //0: Repl
 //1: is
@@ -37,25 +49,21 @@ const arr1 = [1, 2, , 3];
 
 const isEven = number => console.log(number % 2 === 0);
 
-console.log("forEach: ");
+console.log("= forEach: =");
 arr1.forEach(isEven);
 
-console.log("myForEach: ");
+console.log("= myForEach: =");
 arr1.myForEach(isEven, arr1);
 
 // Test 3: Print Elements //
 console.log("== Test 3: Print Elements ==");
 
-// func found on the MDN Web Docs page for forEach
-function logArrayElements(element, index, array) {
-    console.log('a[' + index + '] = ' + element);
-}
-
-console.log("forEach: ");
+console.log("= forEach: =");
 arr1.forEach(logArrayElements);
 
-console.log("myForEach: ");
+console.log("= myForEach: =");
 arr1.myForEach(logArrayElements, arr1);
+
 
 
 /**
@@ -66,26 +74,72 @@ arr1.myForEach(logArrayElements, arr1);
  * @param array    an array to apply this mapping to, not modified.
  * @return         a brand new array with equal length to the original.
  */
-function myMap(mapping, array) {
+Array.prototype.myMap = (mapping, array) => {
     //if this is run as an instance method, bind array to this
     if (array == undefined || array == null) {
         array = this;
     }
+
     let newArray = [];
-    // code here
+
+    for (let i = 0; i < array.length; i++) {
+        if(array[i] === undefined) continue;
+
+        newArray[i] = mapping(array[i], i, array);
+    }
+
     return newArray;
-}
+};
 
-//this allows us to call it as an instance method of all Arrays using "."
-Array.prototype.map = myMap;
 
+// MAP TESTS //
 console.log("==== Testing Map ====");
 
-let testMap = [1, 2, 3, 4, 5];
-console.log(myMap(function (element) {
+// Test 1: Squared //
+console.log("== Test 1: Squared ==");
+
+const testMap = [1, 2, 3, 4, 5];
+const square = (element) => {
     return element * element;
-}, testMap));
+}
+
+console.log("= map: =");
+console.log(testMap.map(square));
+
+console.log("= myMap: =");
+console.log(testMap.myMap(square, testMap));
 //should be [1, 4, 9, 16, 25]
+
+// Test 2: X2
+console.log("== Test 2: X2 ==");
+
+const arr3 = [1, 4, 9, , 16];
+const times2 = x => x * 2;
+
+console.log("= map: =");
+console.log(arr3.map(times2));
+
+console.log("= myMap: =");
+console.log(arr3.myMap(times2, arr3));
+
+// Test 3: Reformat Array
+console.log("== Test 3: Reformat Array ==");
+
+const kvArray = [{ key: 1, value: 10 }, { key: 2, value: 20 }, { key: 3, value: 30 }];
+
+// func found on the MDN Web Docs page for map
+const reformatArray = (obj => {
+    let rObj = {};
+    rObj[obj.key] = obj.value;
+    return rObj;
+})
+
+console.log("= map: =");
+console.log(kvArray.map(reformatArray));
+
+console.log("= myMap: =");
+console.log(kvArray.myMap(reformatArray, kvArray));
+
 
 
 /**
