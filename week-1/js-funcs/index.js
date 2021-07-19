@@ -16,7 +16,7 @@ Array.prototype.myForEach = (loopBody, array) => {
 // FOR EACH TESTS //
 console.log("==== Testing forEach ====");
 
-// Test 1: Initial Test
+// Test 1: Initial Test //
 console.log("== Test 1: Even ==");
 //this should be const
 const testForEach = ["Repl", "is", "extra"];
@@ -30,7 +30,7 @@ testForEach.myForEach((element, index) => {
 //1: is
 //2: extra
 
-// Test 2: Even
+// Test 2: Even //
 console.log("== Test 2: Even ==");
 
 const arr1 = [1, 2, , 3];
@@ -41,9 +41,9 @@ console.log("forEach: ");
 arr1.forEach(isEven);
 
 console.log("myForEach: ");
-arr1.myForEach(isEven);
+arr1.myForEach(isEven, arr1);
 
-// Test 3: Print Elements
+// Test 3: Print Elements //
 console.log("== Test 3: Print Elements ==");
 
 // func found on the MDN Web Docs page for forEach
@@ -55,7 +55,7 @@ console.log("forEach: ");
 arr1.forEach(logArrayElements);
 
 console.log("myForEach: ");
-arr1.myForEach(logArrayElements);
+arr1.myForEach(logArrayElements, arr1);
 
 
 /**
