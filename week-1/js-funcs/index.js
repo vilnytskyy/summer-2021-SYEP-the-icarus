@@ -5,19 +5,58 @@
  * @param loopBody  should be a function that takes three parameters: element, index, array.
  * @param array     should be an array if this is not run as a method.
  */
-function myForEach(loopBody, array) { }
+Array.prototype.myForEach = (loopBody, array) => {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i] === undefined) continue;
 
+        loopBody(array[i], i, array);
+    }
+};
+
+// FOR EACH TESTS //
 console.log("==== Testing forEach ====");
+
+// Test 1: Initial Test
+console.log("== Test 1: Even ==");
 //this should be const
-var testForEach = ["Repl", "is", "extra"];
+const testForEach = ["Repl", "is", "extra"];
+
 //make this an arrow function
-myForEach(function (element, index) {
+testForEach.myForEach((element, index) => {
     console.log(index + ": " + element);
 }, testForEach);
 //Expected output
 //0: Repl
 //1: is
 //2: extra
+
+// Test 2: Even
+console.log("== Test 2: Even ==");
+
+const arr1 = [1, 2, , 3];
+
+const isEven = number => console.log(number % 2 === 0);
+
+console.log("forEach: ");
+arr1.forEach(isEven);
+
+console.log("myForEach: ");
+arr1.myForEach(isEven);
+
+// Test 3: Print Elements
+console.log("== Test 3: Print Elements ==");
+
+// func found on the MDN Web Docs page for forEach
+function logArrayElements(element, index, array) {
+    console.log('a[' + index + '] = ' + element);
+}
+
+console.log("forEach: ");
+arr1.forEach(logArrayElements);
+
+console.log("myForEach: ");
+arr1.myForEach(logArrayElements);
+
 
 /**
  * MAP
@@ -32,7 +71,7 @@ function myMap(mapping, array) {
     if (array == undefined || array == null) {
         array = this;
     }
-    var newArray = [];
+    let newArray = [];
     // code here
     return newArray;
 }
@@ -42,7 +81,7 @@ Array.prototype.map = myMap;
 
 console.log("==== Testing Map ====");
 
-var testMap = [1, 2, 3, 4, 5];
+let testMap = [1, 2, 3, 4, 5];
 console.log(myMap(function (element) {
     return element * element;
 }, testMap));
@@ -67,8 +106,8 @@ function myFilter(filterFunction, array) {
 Array.prototype.filter = myFilter;
 
 console.log("==== Testing Filter ====");
-var testFilter = [1, 2, 3, 4, 5];
-var filtered = testFilter.filter(function (element) {
+let testFilter = [1, 2, 3, 4, 5];
+let filtered = testFilter.filter(function (element) {
     return (element % 2) == 0; //even?
 });
 console.log(filtered);
@@ -114,7 +153,7 @@ function myReduce(loopBody, initialValue, array) { }
 Array.prototype.reduce = myReduce;
 
 console.log("==== Testing Reduce ====");
-var testReduce = [-3, 3, 9];
+let testReduce = [-3, 3, 9];
 console.log("Sum: " + myReduce(function (sum, x) {
     return sum + x;
 }, 100, testReduce));
@@ -141,7 +180,7 @@ Array.prototype.includes = myIncludes;
 
 console.log("==== Testing Include ====");
 
-var testIncludes = [6, 7, 8];
+let testIncludes = [6, 7, 8];
 console.log("Includes 6: " + myIncludes(6, testIncludes));
 console.log("Includes 10: " + testIncludes.includes(10));
 
@@ -175,7 +214,7 @@ function myPush(elementToAdd, array) { }
 console.log("==== Testing Push ====");
 
 Array.prototype.push = myPush;
-var testPush = ["why do we use"];
+let testPush = ["why do we use"];
 console.log(myPush("repl", testPush));
 
 /**
@@ -191,7 +230,7 @@ Array.prototype.lastIndexOf = myLastIndexOf;
 
 console.log("==== Testing lastIndexOf ====");
 
-var testLast = ["P", "Q", "Q", "P", "P"];
+let testLast = ["P", "Q", "Q", "P", "P"];
 console.log("Last P: " + myLastIndexOf("P", testLast));
 console.log("Last Q: " + testLast.lastIndexOf("Q"));
 
@@ -213,7 +252,7 @@ function grabValues(obj) {
 
 }
 
-var testKeys = { points: 500, username: "Max", wow: null };
+let testKeys = { points: 500, username: "Max", wow: null };
 console.log("==== Testing grabKeys ====");
 console.log(grabKeys(testKeys));
 //points, username, wow
