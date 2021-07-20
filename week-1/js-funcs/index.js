@@ -150,14 +150,25 @@ console.log(kvArray.myMap(reformatArray, kvArray));
  * @param array           the array to be scanned
  * @return                the new array
  */
-function myFilter(filterFunction, array) {
+Array.prototype.myFilter = (filterFunction, array) => {
     if (array == undefined) {
         array = this;
     }
-    //code here
-}
 
-Array.prototype.filter = myFilter;
+    let arr = [];
+    let arr_i = 0;
+
+    for (let i = 0; i < this.length; i++) {
+        if (this[i] === undefined) continue;
+
+        if (callbackFn(this[i], i, this)) {
+            arr[arr_i] = this[i];
+            arr_i++;
+        }
+    }
+
+    return arr;
+}
 
 console.log("==== Testing Filter ====");
 let testFilter = [1, 2, 3, 4, 5];
