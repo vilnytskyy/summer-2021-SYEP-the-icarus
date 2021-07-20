@@ -47,13 +47,13 @@ console.log("== Test 2: Even ==");
 
 const arr1 = [1, 2, , 3];
 
-const isEven = number => console.log(number % 2 === 0);
+const printIsEven = number => console.log(number % 2 === 0);
 
 console.log("= forEach: =");
-arr1.forEach(isEven);
+arr1.forEach(printIsEven);
 
 console.log("= myForEach: =");
-arr1.myForEach(isEven, arr1);
+arr1.myForEach(printIsEven, arr1);
 
 // Test 3: Print Elements //
 console.log("== Test 3: Print Elements ==");
@@ -158,11 +158,11 @@ Array.prototype.myFilter = (filterFunction, array) => {
     let arr = [];
     let arr_i = 0;
 
-    for (let i = 0; i < this.length; i++) {
-        if (this[i] === undefined) continue;
+    for (let i = 0; i < array.length; i++) {
+        if (array[i] === undefined) continue;
 
-        if (callbackFn(this[i], i, this)) {
-            arr[arr_i] = this[i];
+        if (filterFunction(array[i], i, array)) {
+            arr[arr_i] = array[i];
             arr_i++;
         }
     }
@@ -170,15 +170,54 @@ Array.prototype.myFilter = (filterFunction, array) => {
     return arr;
 }
 
+// FILTER TESTS //
 console.log("==== Testing Filter ====");
+
+// Test 1: Even //
+console.log("== Test 1: Even ==");
+
 let testFilter = [1, 2, 3, 4, 5];
-let filtered = testFilter.filter(function (element) {
-    return (element % 2) == 0; //even?
-});
-console.log(filtered);
+const isEven = number => number % 2 === 0;
+
+console.log("filter: ");
+console.log(testFilter.filter(isEven));
 // should be [2, 4]
-console.log(filtered == testFilter);
-// should be false since a new array is created, not modified
+
+console.log("myFilter: ");
+console.log(testFilter.filter(isEven, testFilter));
+
+// Test 2: Limit
+console.log("== Test 2: Limit ==");
+
+const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
+const limit = word => word.length > 6;
+
+console.log("filter: ");
+console.log(words.filter(limit));
+
+console.log("myFilter: ");
+console.log(words.myFilter(limit, words));
+
+// Test 3: Prime
+console.log("== Test 3: Prime ==");
+
+const arr4 = [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+
+// func found on the MDN Web Docs page for filter
+function isPrime(num) {
+    for (let i = 2; num > i; i++) {
+        if (num % i == 0) {
+            return false;
+        }
+    }
+    return num > 1;
+}
+
+console.log("filter: ");
+console.log(arr4.filter(isPrime));
+
+console.log("myFilter: ");
+console.log(arr4.myFilter(isPrime, arr4));
 
 /**
  * SOME
