@@ -18,13 +18,13 @@ Array.prototype.myForEach = (loopBody, array) => {
 console.log("==== Testing forEach ====");
 
 // Test 1: Print Elements //
-console.log("== Test 1: Print Elements ==");
+console.log("=== Test 1: Print Elements ===");
 //this should be const
 const testForEach = ["Repl", "is", "extra"];
 
 // func found on the MDN Web Docs page for forEach
-function logArrayElements(element, index, array) {
-  console.log('a[' + index + '] = ' + element);
+function logArrayElements(element, index) {
+  console.log('a[' , index , '] =', element);
 }
 
 console.log("= forEach =");
@@ -43,7 +43,7 @@ testForEach.myForEach(logArrayElements, testForEach);
 //2: extra
 
 // Test 2: Even //
-console.log("== Test 2: Even ==");
+console.log("=== Test 2: Even ===");
 
 const arr1 = [1, 2, , 3];
 
@@ -87,7 +87,7 @@ Array.prototype.myMap = (mapping, array) => {
 console.log("==== Testing Map ====");
 
 // Test 1: Squared //
-console.log("== Test 1: Squared ==");
+console.log("=== Test 1: Squared ===");
 
 const testMap = [1, 2, 3, 4, 5];
 const square = (element) => {
@@ -102,7 +102,7 @@ console.log(testMap.myMap(square, testMap));
 //should be [1, 4, 9, 16, 25]
 
 // Test 2: X2
-console.log("== Test 2: X2 ==");
+console.log("=== Test 2: X2 ===");
 
 const arr3 = [1, 4, 9, , 16];
 const times2 = x => x * 2;
@@ -114,7 +114,7 @@ console.log("= myMap =");
 console.log(arr3.myMap(times2, arr3));
 
 // Test 3: Reformat Array
-console.log("== Test 3: Reformat Array ==");
+console.log("=== Test 3: Reformat Array ===");
 
 const kvArray = [{ key: 1, value: 10 }, { key: 2, value: 20 }, { key: 3, value: 30 }];
 
@@ -165,7 +165,7 @@ Array.prototype.myFilter = (filterFunction, array) => {
 console.log("==== Testing Filter ====");
 
 // Test 1: Even //
-console.log("== Test 1: Even ==");
+console.log("=== Test 1: Even ===");
 
 let testFilter = [1, 2, 3, 4, 5];
 const isEven = number => number % 2 === 0;
@@ -178,7 +178,7 @@ console.log("= myFilter =");
 console.log(testFilter.myFilter(isEven, testFilter));
 
 // Test 2: Limit
-console.log("== Test 2: Limit ==");
+console.log("=== Test 2: Limit ===");
 
 const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
 const limit = word => word.length > 6;
@@ -190,7 +190,7 @@ console.log("= myFilter =");
 console.log(words.myFilter(limit, words));
 
 // Test 3: Prime
-console.log("== Test 3: Prime ==");
+console.log("=== Test 3: Prime ===");
 
 const arr4 = [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
@@ -236,10 +236,12 @@ Array.prototype.mySome = (loopBody, array) => {
 // SOME TESTS //
 console.log("==== Testing Some ====");
 
-// Test 1: Even
-console.log("== Test 1: Even ==");
+// Test 1: Even - True
+console.log("=== Test 1: Even - True ===");
 
 const arr5 = [1, 2, 3, 4, 5];
+
+console.log("Are some elements in", arr5, "even?");
 
 console.log("= some =");
 console.log(arr5.some(isEven));
@@ -247,10 +249,12 @@ console.log(arr5.some(isEven));
 console.log("= mySome =");
 console.log(arr5.mySome(isEven, arr5));
 
-// Test 2: All Odds
-console.log("== Test 2: All Odds ==");
+// Test 2: Even - False
+console.log("=== Test 2: Even - False ===");
 
-const arr5b = [1, 5, 7, 3, 9, 13];
+const arr5b = [1, 5, 7, 3, 9];
+
+console.log("Are some elements in", arr5b, "even?");
 
 console.log("= some =");
 console.log(arr5b.some(isEven));
@@ -268,10 +272,49 @@ console.log(arr5b.mySome(isEven, arr5b));
  * @param array     the array to be looped over
  * @return          true or false
  */
-function myEvery(loopBody, array) { }
+Array.prototype.myEvery = (loopBody, array) => {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] === undefined) continue;
 
-Array.prototype.every = myEvery;
-console.log("==== Testing every ====");
+    if (!loopBody(array[i], i, array)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+
+// EVERY TESTS //
+console.log("==== Testing Every ====");
+
+// Test 1: Threshold - True
+console.log("=== Test 1: Threshold - True ===");
+
+const arr6 = [1, 30, 39, 29, 13, 6];
+
+const isBelowThreshold = (currentValue) => currentValue < 40;
+
+console.log("Is every element in", arr6, "below the threshold (< 40)?");
+
+console.log("= every =");
+console.log(arr6.every(isBelowThreshold));
+
+console.log("= myEvery =");
+console.log(arr6.myEvery(isBelowThreshold, arr6));
+
+// Test 2: Threshold - False
+console.log("=== Test 2: Threshold - False ===");
+
+const arr6b = [7, 25, 47, 38, 2, 18];
+
+console.log("Is every element in", arr6b, "below the threshold (< 40)?");
+
+console.log("= every =");
+console.log(arr6b.every(isBelowThreshold));
+
+console.log("= myEvery =");
+console.log(arr6b.myEvery(isBelowThreshold, arr6b));
 
 
 
