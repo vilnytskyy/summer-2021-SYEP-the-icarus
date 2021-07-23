@@ -463,22 +463,47 @@ console.log(arr7b.myReduce(sum, 5, arr7b));
  * INCLUDES
  * 
  * Returns true if "value" is in this array.
- * @param value  literally anything you wanna find
- * @param array  where you want to look (array)
- * @return       true or false
+ * @param value       literally anything you wanna find
+ * @param fromIndex  the place to start looking (default 0)
+ * @param array       where you want to look (array)
+ * @return            true or false
  */
-function myIncludes(value, array) {
+Array.prototype.myIncludes = (value, fromIndex, array) => {
   array = array || this;
-  //code here
-}
 
-Array.prototype.includes = myIncludes;
+  let startIndex = 0;
+
+  // Check if fromIndex is provided
+  if (fromIndex !== undefined) {
+    if (fromIndex >= array.length) {
+      return false;
+    }
+
+    if (fromIndex < 0) {
+      startIndex = array.length + fromIndex;
+
+      if (startIndex <= -1 * array.length) {
+        startIndex = 0;
+      }
+    } else {
+      startIndex += fromIndex;
+    }
+  }
+
+  for (let i = startIndex; i < array.length; i++) {
+    if (array[i] === value || Number.isNaN(array[i])) {
+      return true;
+    }
+  }
+
+  return false;
+};
 
 console.log("==== Testing Include ====");
 
 let testIncludes = [6, 7, 8];
-console.log("Includes 6: " + myIncludes(6, testIncludes));
-console.log("Includes 10: " + testIncludes.includes(10));
+console.log("Includes 6: " + testIncludes.myIncludes(6, undefined, testIncludes));
+console.log("Includes 10: " + testIncludes.includes(6));
 
 
 
