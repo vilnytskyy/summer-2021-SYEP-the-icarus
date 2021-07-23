@@ -282,7 +282,7 @@ Array.prototype.myEvery = (loopBody, array) => {
   }
 
   return true;
-}
+};
 
 
 // EVERY TESTS //
@@ -327,20 +327,135 @@ console.log(arr6b.myEvery(isBelowThreshold, arr6b));
  * @param array  the array to reduce
  * @return       the final accumulator value
  */
-function myReduce(loopBody, initialValue, array) { }
+Array.prototype.myReduce = (loopBody, initialValue, array) => {
+  let startIndex = 0;
+  let total = 0;
+  let totalElements = 0;
+  let elementIndices = [];
+  let indexM = 0;
 
-Array.prototype.reduce = myReduce;
+  // Sets arrEmpty to true if either this array is not an array or this array is empty
+  let arrEmpty = !Array.isArray(array) || !array.length;
+  // Sets inVal to true if initialValue is undefined  
+  let inVal = initialValue === undefined;
 
+  // Checking if the array is empty and no initial value is provided
+  if (arrEmpty && inVal) {
+    throw new TypeError("Reduce of empty array with no initial value");
+  }
+
+  // Counts !undefined values in array
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] !== undefined) {
+      totalElements++;
+      elementIndices[indexM] = i;
+      indexM++;
+    }
+  }
+
+  // Checking if initialValue is provided
+  if (inVal) {
+    if (totalElements > 1) {
+      startIndex += elementIndices[1];
+    }
+
+    total += array[elementIndices[0]];
+  } else {
+    total += initialValue;
+  }
+
+  // If the array only has one element (regardless of position) and no initialValue is provided,
+  // return the solo value without calling loopBody
+  if (totalElements === 1 && inVal) {
+    return array[elementIndices[0]];
+  }
+
+  // if initialValue is provided but the array is empty, return the solo value without calling loopBody
+  if (arrEmpty && !inVal) {
+    return initialValue;
+  }
+
+
+  for (let i = startIndex; i < array.length; i++) {
+    if (array[i] === undefined) continue;
+    total = loopBody(total, array[i], i, array);
+  }
+
+  return total;
+};
+
+
+// REDUCE TESTS //
 console.log("==== Testing Reduce ====");
+
+// Test 1: Sum + Min
+console.log("=== Test 1: Sum + Min ===");
+
+const sum = (sum, x) => sum + x;
+const min = (min, x) => (min < x) ? min : x;
+
 let testReduce = [-3, 3, 9];
-console.log("Sum: " + myReduce(function (sum, x) {
-  return sum + x;
-}, 100, testReduce));
+
+console.log("= reduce =");
+console.log("Sum: " + testReduce.reduce(sum, 100));
 //should print Sum: 109
-console.log("Min: " + myReduce(function (min, x) {
-  return (min < x) ? min : x;
-}, 0, testReduce));
+console.log("Min: " + testReduce.reduce(min));
 //should print Min: -3
+
+console.log("= myReduce =");
+
+console.log("Sum: " + testReduce.myReduce(sum, 100, testReduce));
+//should print Sum: 109
+console.log("Min: " + testReduce.myReduce(min, undefined, testReduce));
+//should print Min: -3
+
+// Test 2: Reducer
+console.log("=== Test 2: Reducer ===");
+
+const arr7 = [1, 2, 3, 4];
+
+console.log("= reduce =");
+console.log(arr7.reduce(sum));
+
+console.log("= myReduce =");
+console.log(arr7.myReduce(sum, undefined, arr7));
+
+// Test 3: InitialVal
+console.log("=== Test 3: InitialVal ===")
+
+console.log("= reduce =");
+console.log(arr7.reduce(sum, 5));
+
+console.log("= myReduce =");
+console.log(arr7.myReduce(sum, 5, arr7));
+
+// Test 4: Error
+console.log("=== Test 4: Error ===");
+
+const arr7b = [];
+
+console.log("= reduce =");
+try {
+    arr7b.reduce(sum);
+} catch (error) {
+    console.log("Caught Error!");
+}
+
+console.log("= myReduce =");
+try {
+    arr7b.myReduce(sum, undefined, arr7b);
+} catch (error) {
+    console.log("Caught Error!");
+}
+
+// Test 5: Empty Arr w/ IntialVal
+console.log("=== Test 5: Empty Arr w/ IntialVal ===");
+
+console.log("= reduce =");
+console.log(arr7b.reduce(sum, 5));
+
+console.log("= myReduce =");
+console.log(arr7b.myReduce(sum, 5, arr7b));
 
 
 
