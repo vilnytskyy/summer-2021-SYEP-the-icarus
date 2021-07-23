@@ -463,22 +463,99 @@ console.log(arr7b.myReduce(sum, 5, arr7b));
  * INCLUDES
  * 
  * Returns true if "value" is in this array.
- * @param value  literally anything you wanna find
- * @param array  where you want to look (array)
- * @return       true or false
+ * @param value       literally anything you wanna find
+ * @param fromIndex  the place to start looking (default 0)
+ * @param array       where you want to look (array)
+ * @return            true or false
  */
-function myIncludes(value, array) {
+Array.prototype.myIncludes = (value, fromIndex, array) => {
   array = array || this;
-  //code here
-}
 
-Array.prototype.includes = myIncludes;
+  let startIndex = 0;
 
+  // Check if fromIndex is provided
+  if (fromIndex !== undefined) {
+    if (fromIndex >= array.length) {
+      return false;
+    }
+
+    if (fromIndex < 0) {
+      startIndex = array.length + fromIndex;
+
+      if (startIndex <= -1 * array.length) {
+        startIndex = 0;
+      }
+    } else {
+      startIndex += fromIndex;
+    }
+  }
+
+  for (let i = startIndex; i < array.length; i++) {
+    if (array[i] === value || Number.isNaN(array[i])) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+
+// INCLUDES TESTS //
 console.log("==== Testing Include ====");
 
+// Test 1: Regular
+console.log("=== Test 1: Regular ===");
+
 let testIncludes = [6, 7, 8];
-console.log("Includes 6: " + myIncludes(6, testIncludes));
+
+console.log("= includes =");
+console.log("Includes 6: " + testIncludes.includes(6));
 console.log("Includes 10: " + testIncludes.includes(10));
+
+console.log("= myIncludes =");
+console.log("Includes 6: " + testIncludes.myIncludes(6, undefined, testIncludes));
+console.log("Includes 10: " + testIncludes.myIncludes(10, undefined, testIncludes));
+
+// Test 2: Includes
+console.log("=== Test 2: Includes ===");
+
+const arrTestA = [1, 2, 3];
+
+console.log("= includes =");
+console.log("Does", arrTestA, "include", 2,"?", arrTestA.includes(2));                                    // true
+console.log("Does", arrTestA, "include", 4,"?", arrTestA.includes(4));                                    // false
+console.log("Does", arrTestA, "include", 3, "starting from index", 3, "?", arrTestA.includes(3, 3));      // false
+console.log("Does", arrTestA, "include", 3, "starting from index", -1, "?", arrTestA.includes(3, -1));    // true
+console.log("Does", [1, 2, NaN], "include", NaN,"?", [1, 2, NaN].includes(NaN));                          // true
+console.log("Does", ["1", "2", "3"], "include", 3,"?", ["1", "2", "3"].includes(3));                      // false
+
+console.log("= myIncludes =");
+console.log("Does", arrTestA, "include", 2, "?", arrTestA.myIncludes(2, undefined, arrTestA));                        // true
+console.log("Does", arrTestA, "include", 4, "?", arrTestA.myIncludes(4, undefined, arrTestA));                        // false
+console.log("Does", arrTestA, "include", 3, "starting from index", 3, "?", arrTestA.myIncludes(3, 3, arrTestA));      // false
+console.log("Does", arrTestA, "include", 3, "starting from index", -1, "?", arrTestA.myIncludes(3, -1, arrTestA));    // true
+console.log("Does", [1, 2, NaN], "include", NaN, "?", [1, 2, NaN].myIncludes(NaN, undefined, [1, 2, NaN]));           // true
+console.log("Does", ["1", "2", "3"], "include", 3, "?", ["1", "2", "3"].myIncludes(3, undefined, ["1", "2", "3"]));   // false
+
+// Test 3: Index
+console.log("=== Test 3: Index ===");
+const arrTestB = ['a', 'b', 'c'];
+
+console.log("= includes =");
+console.log("Does", arrTestB, "include 'c' starting from index", 1, "?", arrTestB.includes('c', 1));    // true
+console.log("Does", arrTestB, "include 'c' starting from index", 5, "?", arrTestB.includes('c', 5));    // false
+console.log("Does", arrTestB, "include 'a' starting from index", -1, "?", arrTestB.includes('a', -1));  // false
+console.log("Does", arrTestB, "include 'b' starting from index", -1, "?", arrTestB.includes('b', -1));  // false
+console.log("Does", arrTestB, "include 'c' starting from index", -1, "?", arrTestB.includes('c', -1));  // true
+console.log("Does", arrTestB, "include 'a' starting from index", -3, "?", arrTestB.includes('a', -3));  // true
+
+console.log("= myIncludes =");
+console.log("Does", arrTestB, "include 'c' starting from index", 1, "?", arrTestB.includes('c', 1, arrTestB));    // true
+console.log("Does", arrTestB, "include 'c' starting from index", 5, "?", arrTestB.includes('c', 5, arrTestB));    // false
+console.log("Does", arrTestB, "include 'a' starting from index", -1, "?", arrTestB.includes('a', -1, arrTestB));  // false
+console.log("Does", arrTestB, "include 'b' starting from index", -1, "?", arrTestB.includes('b', -1, arrTestB));  // false
+console.log("Does", arrTestB, "include 'c' starting from index", -1, "?", arrTestB.includes('c', -1, arrTestB));  // true
+console.log("Does", arrTestB, "include 'a' starting from index", -3, "?", arrTestB.includes('a', -3, arrTestB));  // true
 
 
 
